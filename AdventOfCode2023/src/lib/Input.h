@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 
+// Makes it possible to parse strings directly without having to put it in a variable
+// Ie std::cin >> "number: " >> number;
 static std::istream& operator>>(std::istream& stream, char const* pattern) {
   char c;
   while (stream.peek() == ' ')

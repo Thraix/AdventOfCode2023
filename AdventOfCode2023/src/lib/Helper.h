@@ -17,20 +17,22 @@ struct Helper
     t.erase(std::remove_if(t.begin(), t.end(), func), t.end());
   }
 
-  static bool StartsWith(const std::string& str, const std::string& prefix)
+  static bool StartsWith(const std::string_view& str, const std::string& prefix)
   {
-    if (str.size() < prefix.size())
-      return false;
-    return std::string_view{str.c_str(), prefix.size()} == prefix;
+    return str.substr(0, prefix.size()) == prefix;
   }
 
-  static bool EndsWith(const std::string& str, const std::string& prefix)
+  static bool EndsWith(const std::string_view& str, const std::string& prefix)
   {
-    if (str.size() < prefix.size())
-      return false;
-    return std::string_view{str.c_str() + str.size() - prefix.size(), prefix.size()} == prefix;
+    return str.substr(str.size() - prefix.size(), prefix.size()) == prefix;
   }
 
+  static bool IsDigit(char c)
+  {
+    return c >= '0' && c <= '9';
+  }
+
+  // Converts a binary string to an int32_t ie "10100111001" to 1337
   static int BinStrToInt(const std::string& str)
   {
     if(str.size() >= 32)
@@ -48,6 +50,7 @@ struct Helper
     return val;
   }
 
+  // Converts a binary string to an int64_t ie "10100111001" to 1337
   static int64_t BinStrToInt64(const std::string& str)
   {
     if(str.size() >= 64)
