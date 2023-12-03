@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <cassert>
 #include <vector>
 
 struct Index2D
@@ -176,16 +177,19 @@ struct Array2D
 
   int GetIndex(int x, int y) const
   {
+    assert(IsInside(x, y));
     return x + y * width;
   }
 
   T& Get(int x, int y) 
   {
+    assert(IsInside(x, y));
     return array2D[x + y * width];
   }
 
   const T& Get(int x, int y) const
   {
+    assert(IsInside(x, y));
     return array2D[x + y * width];
   }
 
@@ -293,9 +297,14 @@ struct Array2D
     return neighbors;
   }
 
+  bool IsInside(int x, int y) const
+  {
+    return x >= 0 && y >= 0 && x < width && y < height;
+  }
+
   bool IsInside(const Index2D& index) const
   {
-    return index.x >= 0 && index.y >= 0 && index.x < width && index.y < height;
+    return IsInside(index.x, index.y);
   }
 
   int Count(const T& val) const
