@@ -42,6 +42,9 @@
     <ClCompile Include="src\days\Day06.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\days\Day07.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lib\Array2D.h">
