@@ -163,6 +163,13 @@ struct Array2D
     array2D.resize(width * height);
   }
 
+  Array2D(int width, int height, const T& fill)
+    : width{width}, height{height}
+  {
+    array2D = std::vector<T>(width * height, fill);
+    array2D.resize(width * height);
+  }
+
   Array2D(int width, int height, const std::vector<T>& data)
     : width{width}, height{height}, array2D{data}
   {}

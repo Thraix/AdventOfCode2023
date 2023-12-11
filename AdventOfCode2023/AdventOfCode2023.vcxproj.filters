@@ -48,6 +48,9 @@
     <ClCompile Include="src\days\Day08.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\days\Day10.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\days\Day09.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
