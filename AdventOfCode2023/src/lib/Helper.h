@@ -240,6 +240,46 @@ struct Helper
     return AStar(initial, [](const State&) { return 0; }, branch, goal);
   }
 
+  template <typename Container>
+  static std::ostream& Print(std::ostream& stream, const Container& container)
+  {
+    stream << '[';
+    int i = 0;
+    for (auto it = container.begin(); it != container.end(); ++it)
+    {
+      if(i != 0)
+        stream << ", ";
+      stream << *it;
+      i++;
+    }
+    stream << ']';
+    return stream;
+  }
+
+  static std::string Repeat(const std::string& str, int count)
+  {
+    std::string s;
+    for (int i = 0; i < count; i++)
+    {
+      s += str;
+    }
+    return s;
+  }
+
+  template <typename T>
+  static std::vector<T> Repeat(const std::vector<T>& vec, int count)
+  {
+    std::vector<T> ret;
+    for (int i = 0; i < count; i++)
+    {
+      for (const auto& t : vec)
+      {
+        ret.emplace_back(t);
+      }
+    }
+    return ret;
+  }
+
 private:
   template <typename Key, typename Value, typename Compare, typename Eval>
   static int TSP(const Graph<Key, Value>& graph, const std::set<Key>& nodesLeft, const std::vector<Key>& order, Compare compare, Eval eval)
@@ -294,3 +334,37 @@ public:
     return TSP(graph, graph.GetNodes(), std::vector<Key>{}, compare, eval);
   }
 };
+
+template <typename T>
+static std::ostream& operator<<(std::ostream& stream, const std::vector<T>& container)
+{
+  return Helper::Print(stream, container);
+}
+
+template <typename T>
+static std::ostream& operator<<(std::ostream& stream, const std::set<T>& container)
+{
+  return Helper::Print(stream, container);
+}
+
+template <typename T, typename S>
+static std::ostream& operator<<(std::ostream& stream, const std::map<T, S>& container)
+{
+  stream << "{";
+  int i = 0;
+  for (const auto& [t, s] : container)
+  {
+    if(i != 0)
+      stream << ", ";
+    stream << t << " => " << s;
+    i++;
+  }
+  stream << "}";
+  return stream;
+}
+
+template <typename T, typename S>
+static std::ostream& operator<<(std::ostream& stream, const std::pair<T, S>& pair)
+{
+  return stream << "(" << pair.first << ", " << pair.second << ")";
+}
