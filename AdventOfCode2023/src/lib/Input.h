@@ -32,6 +32,8 @@ struct Input
     std::string str;
     while (getline(input, str))
     {
+      if (str.empty())
+        break;
       width = (int)str.length();
       height++;
       for (auto c : str)
