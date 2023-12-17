@@ -191,36 +191,36 @@ struct Helper
     return true;
   }
 
+  // Input     - Puzzle input
   // State     - initial state of the path finder
-  // Heuristic - int(State)
+  // Heuristic - int(Input, State)
   //             Given a state, what is the minimum cost to get to the goal state
-  // Branch    - std::vector<std::pair<int, State>>(const State& state);
+  // Branch    - std::vector<std::pair<int, State>>(Input, State);
   //             Given a state, what are the possible next states and the cost to get to it
-  // Goal      - bool(const State& state)
+  // Goal      - bool(Input, State)
   //             Given a state, are we in the goal state
-  template <typename State, typename Heuristic, typename Branch, typename Goal>
-  static int AStar(const State& initial, Heuristic heuristic, Branch branch, Goal goal)
+  template <typename Input, typename State, typename Heuristic, typename Branch, typename Goal>
+  static int AStar(const Input& input, const std::vector<State>& initial, Heuristic heuristic, Branch branch, Goal goal)
   {
     std::map<State, int> visited;
     std::multimap<int, std::pair<int, State>> open;
-    open.emplace(0, std::pair<int, State>{0, initial});
-    int i = 0;
+    for(int i = 0; i < initial.size(); i++)
+      open.emplace(0, std::pair<int, State>{0, initial[i]});
     while(!open.empty())
     {
-      i++;
       auto it = open.begin();
-      if(goal(it->second.second))
+      if(goal(input, it->second.second))
       {
         return it->second.first;
       }
       int stateCost = it->second.first;
-      for(auto& newState : branch(it->second.second))
+      for(auto& newState : branch(input, it->second.second))
       {
         auto it = visited.find(newState.second);
         int cost = stateCost + newState.first;
         if(it == visited.end() || it->second > cost)
         {
-          open.emplace(heuristic(newState.second) + cost, std::pair<int, State>{cost, newState.second});
+          open.emplace(heuristic(input, newState.second) + cost, std::pair<int, State>{cost, newState.second});
           visited.emplace(newState.second, cost);
         }
       }
@@ -229,15 +229,44 @@ struct Helper
     return 0;
   }
 
-  // State  - State of the path finder
-  // Branch - std::vector<std::pair<int, State>>(const State& state);
-  //          Given a state, what are the possible next states and the cost to get to it
-  // Goal   - bool(const State& state)
-  //          Given a state, are we in the goal state
-  template <typename State, typename Branch, typename Goal>
-  static int Dijkstras(const State& initial, Branch branch, Goal goal)
+
+
+  // Input     - Puzzle input
+  // State     - initial state of the path finder
+  // Heuristic - int(Input, State)
+  //             Given a state, what is the minimum cost to get to the goal state
+  // Branch    - std::vector<std::pair<int, State>>(Input, State);
+  //             Given a state, what are the possible next states and the cost to get to it
+  // Goal      - bool(Input, State)
+  //             Given a state, are we in the goal state
+  template <typename Input, typename State, typename Heuristic, typename Branch, typename Goal>
+  static int AStar(const Input& input, const State& initial, Heuristic heuristic, Branch branch, Goal goal)
   {
-    return AStar(initial, [](const State&) { return 0; }, branch, goal);
+    AStar(input, std::vector<State>{initial}, heuristic, branch, goal);
+  }
+
+  // Input  - Puzzle input
+  // State  - State of the path finder
+  // Branch - std::vector<std::pair<int, State>>(Input, State);
+  //          Given a state, what are the possible next states and the cost to get to it
+  // Goal   - bool(Input, State)
+  //          Given a state, are we in the goal state
+  template <typename Input, typename State, typename Branch, typename Goal>
+  static int Dijkstras(const Input& input, const std::vector<State>& initial, Branch branch, Goal goal)
+  {
+    return AStar(input, initial, [](const Input&, const State&) { return 0; }, branch, goal);
+  }
+
+  // Input  - Puzzle input
+  // State  - State of the path finder
+  // Branch - std::vector<std::pair<int, State>>(Input, State);
+  //          Given a state, what are the possible next states and the cost to get to it
+  // Goal   - bool(Input, State)
+  //          Given a state, are we in the goal state
+  template <typename Input, typename State, typename Branch, typename Goal>
+  static int Dijkstras(const Input& input, const State& initial, Branch branch, Goal goal)
+  {
+    return AStar(input, std::vector<State>{initial}, [](const Input&, const State&) { return 0; }, branch, goal);
   }
 
   template <typename Container>

@@ -24,7 +24,7 @@
     <ClCompile Include="src\lib\JsonUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\days\Day16.cpp">
+    <ClCompile Include="src\days\Day17.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\days\Day01.cpp">
@@ -70,6 +70,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\days\Day15.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\days\Day16.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

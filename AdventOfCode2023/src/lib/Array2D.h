@@ -29,6 +29,11 @@ struct Index2D
     return Index2D{x - other.x, y - other.y};
   }
 
+  Index2D operator*(int scale) const
+  {
+    return Index2D{x * scale, y * scale};
+  }
+
   friend std::ostream& operator<<(std::ostream& stream, const Index2D& index)
   {
     return stream << "(" << index.x << " " << index.y << ")";
