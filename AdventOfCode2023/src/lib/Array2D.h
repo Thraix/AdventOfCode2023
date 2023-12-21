@@ -405,7 +405,7 @@ struct Array2D
     }
   }
 
-  Index2D Find(const T& value)
+  Index2D Find(const T& value) const
   {
     for(int y = 0; y < height; y++)
     {
