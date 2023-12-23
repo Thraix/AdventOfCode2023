@@ -38,6 +38,11 @@ public:
 		return graph.find(from)->second.find(to)->second;
 	}
 
+  const std::map<Key, Value>& GetPaths(const Key& from)
+  {
+    return graph.find(from)->second;
+  }
+
 	const std::set<Key>& GetNodes() const
 	{
 		return nodes;
