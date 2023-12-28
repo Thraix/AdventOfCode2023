@@ -45,6 +45,60 @@ public:
     return DFS(to, visited, from, Value{});
   }
 
+  Value Dijkstras(const Key& from, const Key& to) const
+  {
+    std::map<Key, Value> visited;
+    std::multimap<Value, Key> openSet;
+    openSet.emplace(Value{}, from);
+    while (!openSet.empty())
+    {
+      const auto& [cost, node] = *openSet.begin();
+
+      if (node == to)
+        return cost;
+
+      for (auto& [next, nextCost] : graph.find(node)->second)
+      {
+        auto it = visited.find(next);
+        if (it == visited.end() || it->second > cost + nextCost)
+        {
+          openSet.emplace(cost + nextCost, next);
+          visited[next] = cost + nextCost;
+        }
+      }
+      openSet.erase(openSet.begin());
+    }
+    return Value{};
+  }
+
+  std::pair<Value, std::vector<Key>> DijkstrasWithPath(const Key& from, const Key& to) const
+  {
+    std::map<Key, Value> visited;
+    std::multimap<Value, std::vector<Key>> openSet;
+    openSet.emplace(Value{}, std::vector<Key>{from});
+    while (!openSet.empty())
+    {
+      const auto& [cost, path] = *openSet.begin();
+
+      if (path.back() == to)
+        return {cost, path};
+
+      for (auto& [next, nextCost] : graph.find(path.back())->second)
+      {
+        auto it = visited.find(next);
+        if (it == visited.end() || it->second > cost + nextCost)
+        {
+          std::vector<Key> newPath = path;
+          newPath.emplace_back(next);
+          openSet.emplace(cost + nextCost, newPath);
+          visited[next] = cost + nextCost;
+        }
+      }
+      openSet.erase(openSet.begin());
+    }
+    return {Value{}, {}};
+  }
+
   const Value& GetEdge(const Key& from, const Key& to) const
   {
     // Verification that the nodes exists in the graph?
